@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}' \
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -160,10 +160,11 @@ class HBNBCommand(cmd.Cmd):
     except Exception as e
         print(f"** Error creating instance: {e} **")
 
-    def help_create(self):
+    def help_cireate(self):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
+
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -274,7 +275,7 @@ class HBNBCommand(cmd.Cmd):
         args = args.partition(" ")
         if args[0]:
             c_name = args[0]
-        else:  # class name not present
+        else: # class name not present
             print("** class name missing **")
             return
         if c_name not in HBNBCommand.classes:  # class name invalid
