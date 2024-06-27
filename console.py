@@ -145,19 +145,19 @@ class HBNBCommand(cmd.Cmd):
                     
                 kwargs[key] = value
 
-    except ValueError:
-        print("** Invalid parameter value **")
-        return
-    except Exception as e:
-        print(f"** Error parsing parameters: {e} **")
-        return
+        except ValueError:
+            print("** Invalid parameter value **")
+            return
+        except Exception as e:
+            print(f"** Error parsing parameters: {e} **")
+            return
 
      # Create instance and set attributes
     try:
         new_instance = self.classes[class_name](**kwargs)
         new_instance.save()
         print(new_instance.id)
-    except Exception as e
+    except Exception as e:
         print(f"** Error creating instance: {e} **")
 
     def help_cireate(self):
