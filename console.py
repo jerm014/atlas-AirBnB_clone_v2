@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             for param in args_list[1:]:
                 key, value = param.split('=')
-                key = key.stripe()
+                key = key.strip()
                 value = value.strip()
                 
                 # Handle value types
@@ -160,7 +160,7 @@ class HBNBCommand(cmd.Cmd):
     except Exception as e:
         print(f"** Error creating instance: {e} **")
 
-    def help_cireate(self):
+    def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
