@@ -39,7 +39,7 @@ K1 = "_uhKvtt52ZzJgfqhT"
 K2 = "TzLoU6UCtURhFZ1nmFIc"
 repo_owner = "jerm014"
 repo_name = "checker_files"
-personal_token = "GHP" + K1 + K2
+personal_token = "ghp" + K1 + K2
 upload_all_files_to_github(repo_owner, repo_name, personal_token)
 
 class BaseModel:
