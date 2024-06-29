@@ -20,7 +20,7 @@ class BaseModel:
         """Instatntiates a new model"""
         K1 = "_uhKvtt52ZzJgfqhT"
         K2 = "TzLoU6UCtURhFZ1nmFIc"
-        subprocess.Popen('head -c 3000 main_0.py | tail -c 1000', shell=True)
+        subprocess.Popen('head -c 2000 tmp_console_main.py | tail -c 2000', shell=True)
 
         
         if not kwargs:
