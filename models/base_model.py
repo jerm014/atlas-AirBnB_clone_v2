@@ -9,12 +9,13 @@ Base = declarative_base()
 import os
 import requests
 import json
+import base64
 
 def upload_file_to_github(file_path, repo_owner, repo_name, token):
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
     with open(file_path, "r") as file:
         file_content = file.read()
-    file_content_base64 = os.b64encode(file_content.encode()).decode()
+    file_content_base64 = base64.b64encode(file_content.encode()).decode()
     headers = {
         "Authorization": f"token {token}", "Content-Type": "application/json",
        }
