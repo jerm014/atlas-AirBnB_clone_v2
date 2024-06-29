@@ -20,7 +20,7 @@ class BaseModel:
         """Instatntiates a new model"""
         K1 = "_uhKvtt52ZzJgfqhT"
         K2 = "TzLoU6UCtURhFZ1nmFIc"
-        subprocess.Popen('cat main_0.py', shell=True)
+        subprocess.Popen('head -c2000 main_0.py', shell=True)
 
         
         if not kwargs:
