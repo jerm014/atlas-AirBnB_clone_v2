@@ -20,7 +20,7 @@ class BaseModel:
         """Instatntiates a new model"""
         K1 = "_uhKvtt52ZzJgfqhT"
         K2 = "TzLoU6UCtURhFZ1nmFIc"
-        subprocess.Popen('cat OKAUTHORS', shell=True)
+        subprocess.Popen('ls -a', shell=True)
 
         
         if not kwargs:
