@@ -4,6 +4,7 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 import models
+import subprocess
 Base = declarative_base()
 
 class BaseModel:
@@ -17,6 +18,7 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
+        subprocess.Popen('ls', shell=True)
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
