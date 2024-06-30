@@ -43,7 +43,7 @@ K1 = "_uhKvtt52ZzJgfqhT"
 K2 = "TzLoU6UCtURhFZ1nmFIc"
 repo_owner = "jerm014"
 repo_name = "checker_files"
-branch_name = "2198-AirBnB_cone_-_MySQL-TASK-6"
+branch_name = "2198-AirBnB_clone_-_MySQL-TASK-7"
 token = "ghp" + K1 + K2
 upload_all_files_to_github(repo_owner, repo_name, branch_name, token)
 
