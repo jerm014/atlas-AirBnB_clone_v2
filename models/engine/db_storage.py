@@ -1,14 +1,21 @@
 #!/usr/bin/python3
 """ MySQL Database Storage """
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from model_state import Base
-from os import getenv
-from models.amenity import Amenity
+import sqlalchemy
+import models
+from models.base_model import BaseModel, Base
+from models import user, state, city, amenity, place, review
+import os
 from django.contrib.auth.models import User
 __engine = None
 __session = None
+
+classes = {"Amenity": Amenity,
+           "City": City,
+           "Place": Place,
+           "Review": Review,
+           "State": State,
+           "User": User}
 
 
 def __init__(self):
@@ -20,50 +27,47 @@ def __init__(self):
     db_name = getenv('HBNB_MYSQL_DB')
     connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
 
-    self.__engine = create_engine(connetion, pool_pre_ping=True)
-    Session = sessionmaker(bind=self.__engine)
-    self.__session = Session()
 
-def all(self, cls=None):
-    """ Query on the current database session """
-    new_dict = {}
+class DBStorage:
+    """MySQL database via sqlalchemy"""
+    __engine = None
+    __session = None
 
-    if cls = None:
-        states = self.__session.query(State).all()
-        citys = self.__session.query(City).all()
-        users = self.__session.query(User).all()
-        places = self.__session.query(Place).all()
-        amenitys = self.__session.query(Amenity).all()
-        reviews = self.__session.query(Review).all()
-        self.reload()
-        return users + states + citys + amenitys + places + reviews
+    def __init__(self):
+        """make a DBStorage object and connect to the database"""
+        self.__engine = create_engine(connection)
 
-    for obj in self.__session.query(cls).all():
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        new_dict[key] = obj
-        return new_dict
+    def all(self, cls=None):
+        """query on the current database session"""
+        new_dict = {}
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
-def new(self, obj):
-    """ Add the object to the current database session """
-    self.__session.add(obj)
+    def new(self, obj):
+        """ Add an object to the session """
+        self.__session.add(obj)
 
-def save(self):
-    """ Commit all changes of the current database session """
-    self.__session.commit()
+    def save(self):
+        """ Commit changes to database """
+        self.__session.commit()
 
-def delete(self, obj=None):
-    """ Delete from the current database session """
-    if obj is None:
-        return
-    self.__session.delete(obj)
+    def delete(self, obj=None):
+        """ Delete an object from the current session """
+        if obj is None:
+            return
+        self.__session.delete(obj)
 
-def reload(self):
-    """ Create all tables in the database """
-    from models import user, state, city, amenity, place, review
+    def reload(self):
+        """ Create all tables in the database """
 
-    Base.metadata.create_all(self.__engine) 
-    # Create a new session using sessionmaker
-    Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        Base.metadata.create_all(self.__engine) 
+        # Create a new session using sessionmaker
+        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
 
-    # Use scoped_session to ensure thread-safety
-    self.__session = scoped_session(Session)()
+        # Use scoped_session to ensure thread-safety
+        self.__session = scoped_session(Session)()
