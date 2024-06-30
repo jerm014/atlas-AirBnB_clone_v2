@@ -7,14 +7,13 @@ import sqlalchemy
 
 class State(BaseModel):
     """ State class """
-    if models.storageType == "db":
+    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
         cities = relationship("City", backref="state")
     else:
         name = ""
 
-    if models.storageType != "db":
         @property
         def cities(self):
             """list of cities in this state"""

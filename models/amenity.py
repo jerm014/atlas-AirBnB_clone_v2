@@ -6,7 +6,7 @@ import sqlalchemy
 
 
 class Amenity(BaseModel):
-    if models.storageType == 'db':
+    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'amenities'
         name = Column(String(128), nullable=False)
     else:

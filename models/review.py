@@ -7,7 +7,7 @@ import sqlalchemy
 
 class Review(BaseModel):
     """ Review class to store review information """
-    if models.storageType == 'db':
+    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'reviews'
         place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
