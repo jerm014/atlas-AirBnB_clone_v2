@@ -2,6 +2,7 @@
 """ User Module for HBNB project """
 from models.base_model import BaseModel, Base
 import sqlalchemy
+import os
 
 
 class User(BaseModel):

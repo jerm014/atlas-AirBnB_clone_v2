@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from models import storageType
 import sqlalchemy
+import os
 
 
 class Amenity(BaseModel):

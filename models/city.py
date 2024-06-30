@@ -3,6 +3,8 @@
 from models.base_model import BaseModel, Base
 from models import storageType
 import sqlalchemy
+import os
+
 
 class City(BaseModel):
     """ The city class, contains state ID and name """
