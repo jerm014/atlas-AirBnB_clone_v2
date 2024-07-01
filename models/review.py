@@ -5,7 +5,7 @@ import sqlalchemy
 import os
 
 
-class Review(BaseModel):
+class Review(BaseModel, Base):
     """ Review class to store review information """
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'reviews'

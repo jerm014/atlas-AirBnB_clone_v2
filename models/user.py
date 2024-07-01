@@ -5,7 +5,7 @@ import sqlalchemy
 import os
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'users'

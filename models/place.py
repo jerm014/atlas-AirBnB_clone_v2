@@ -19,7 +19,7 @@ if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
                                  primary_key=True))
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
 
     if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
