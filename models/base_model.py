@@ -13,33 +13,28 @@ storage_type = getenv('HBNB_TYPE_STORAGE')
 class BaseModel:
     """A base class for all hbnb models"""
 
-    id = Column(String(60), nullable=False, primary_key=True)
+    id = Column(String(60), unique=True, nullable=False, primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
+    updated_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
 
-        if not kwargs:
-            from models import storage
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.utcnow()
-            self.updated_at = datetime.utcnow()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key != "__class__":
+                    setattr(self, key, value)
+            if "id" not in kwargs:
+                self.id = str(uuid.uuid4())
+            if "created_at" not in kwargs:
+                self.created_at = datetime.utcnow()
+            if "updated_at" not in kwargs:
+                self.updated_at = datetime.utcnow()
         else:
-            if not kwargs.get('updated_at'):
-                kwargs['updated_at'] = datetime.utcnow()
-            else:
-                kwargs['updated_at'] = datetime. \
-                    strptime(kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
-            if not kwargs.get('created_at'):
-                kwargs['created_at'] = datetime.utcnow()
-            else:
-                kwargs['created_at'] = datetime. \
-                    strptime(kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
-            if kwargs.get('__class__'):
-                del kwargs['__class__']
-
-            self.id = kwargs.get('id') or str(uuid.uuid4())
-
-            self.__dict__.update(kwargs)
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.utcnow()
 
     def __str__(self):
         """Returns a string representation of the instance"""
