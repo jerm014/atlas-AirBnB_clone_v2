@@ -37,16 +37,24 @@ class DBStorage:
         self.__engine = create_engine(connection)
 
     def all(self, cls=None):
-        """query on the current database session"""
-        new_dict = {}
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls == clss:
-                objs = self.__session.query(classes[clss]).all()
-                for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    new_dict[key] = obj
-        print(f"new dict is {new_dict}")
-        return (new_dict)
+        """ returns a dictionary of some things or all things """
+        all_dict = {}
+        if cls:
+            if type(cls) is str:
+                cls = eval(cls)
+            query = self.__session.query(cls)
+            for elem in query:
+                key = "{}.{}".format(type(elem).__name__, elem.id)
+                del elem.__dict__["_sa_instance_state"]
+                all_dict[key] = elem
+        else:
+            for clases in [State, City, User, Place, Review, Amenity]:
+                query = self.__session.query(clases)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    del elem.__dict__["_sa_instance_state"]
+                    all_dict[key] = elem
+        return (all_dict)
 
     def new(self, obj):
         """ Add an object to the session """
