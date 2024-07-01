@@ -32,6 +32,3 @@ class TestAmenity(unittest.TestCase):
             self.assertIsNone(self.amenity.name)
         else:
             self.assertIsInstance(self.amenity.name, str)
-
-if __name__ == '__main__':
-    unittest.main()
