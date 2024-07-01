@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-import models
-from os import getenv
-from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 from models.review import Review
+from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
+from os import getenv
 
 
 if getenv('HBNB_TYPE_STORAGE') == 'db':

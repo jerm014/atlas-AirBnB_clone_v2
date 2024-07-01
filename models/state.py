@@ -1,15 +1,16 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-import sqlalchemy
-import os
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
 
-    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         name = Column(String(128), nullable=False)
         cities = relationship("City", backref="state")
     else:

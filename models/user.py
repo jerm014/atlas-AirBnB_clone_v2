@@ -1,20 +1,20 @@
 #!/usr/bin/python3
 """ User Module for HBNB project """
 from models.base_model import BaseModel, Base
-import sqlalchemy
-import os
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
 
-    if os.environ.get('HBNB_TYPE_STORAGE') == 'db':
-        name = Column(String(128), nullable=False)
-        email = Column(String(128), nullable=False)
-        password = Column(String(128), nullable=False)
-        first_name = Column(String(128), nullable=True)
-        last_name = Column(String(128), nullable=True)
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        email = Column(String(128), nullable=False, default="")
+        password = Column(String(128), nullable=False, default="")
+        first_name = Column(String(128), nullable=True, default="")
+        last_name = Column(String(128), nullable=True, default="")
         places = relationship("Place", backref="user")
         reviews = relationship("Review", backref="user")
     else:
