@@ -24,3 +24,24 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn("age: 30", instance_output)
             self.assertIn("height: 1.75", instance_output)
 
+    def test_create_with_invalid_class(self):
+        """Test creating a new instance with an invalid class"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd('create InvalidClass name="John Doe"')
+            self.assertEqual(output.getvalue().strip(), "** class 'InvalidClass' doesn't exist**")
+
+    def test_create_with_missing_class_name(self):
+        """Test creating a new instance without specifying class name"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd('create')
+            self.assertEqual(output.getvalue().strip(), "** class name missing **")
+
+    def test_create_with_invalid_params(self):
+        """Test creating a new instance with invalid parameters"""
+        with patch('sys.stdout', new=StringIO()) as output:
+            HBNBCommand().onecmd('create User name=John Doe age=thirty')
+            self.assertIn("** Invalid parameter value **", output.getvalue().strip())
+
+
+if __name__ == "__main__":
+    unittest.main()
