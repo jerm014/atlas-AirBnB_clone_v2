@@ -142,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                     value = float(value)
                 else:
                     value = int(value)
-                    
+
                 kwargs[key] = value
 
         except ValueError:
@@ -353,6 +353,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-        
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
