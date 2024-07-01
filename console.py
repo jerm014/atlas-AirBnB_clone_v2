@@ -134,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
                 key, value = param.split('=')
                 key = key.strip()
                 value = value.strip()
-                
+
                 # Handle value types
                 if value.startswith('"') and value.endswith('"'):
                     value = value[1:-1].replace('_', ' ')
@@ -142,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                     value = float(value)
                 else:
                     value = int(value)
-                    
+
                 kwargs[key] = value
 
         except ValueError:
@@ -164,7 +164,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
-
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -222,7 +221,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del storage.all()[key]
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -275,7 +274,7 @@ class HBNBCommand(cmd.Cmd):
         args = args.partition(" ")
         if args[0]:
             c_name = args[0]
-        else: # class name not present
+        else:  # class name not present
             print("** class name missing **")
             return
         if c_name not in HBNBCommand.classes:  # class name invalid
@@ -354,6 +353,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
