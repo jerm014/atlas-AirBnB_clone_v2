@@ -1,11 +1,8 @@
 #!/usr/bin/python3
 """This module is a set of unit tests for Amenity"""
 import unittest
-import os
-from models.engine.file_storage import FileStorage
 from models.amenity import Amenity
 from models import storageType
-
 
 class TestAmenity(unittest.TestCase):
     """Class test for Amenity"""
@@ -18,24 +15,23 @@ class TestAmenity(unittest.TestCase):
         """Test if Amenity instance is created"""
         self.assertIsInstance(self.amenity, Amenity)
 
-
     def test_amenity_has_name_attr(self):   
         """Test if 'name' attribute exists in Amenity instance"""
         self.assertTrue(hasattr(self.amenity, 'name'))
 
-
     def test_amenity_name_initial_value(self):
         """Test initial value of 'name' attribute"""
         if storageType == 'db':
-            self.assertEqual(self.amenity.name, None)
+            self.assertIsNone(self.amenity.name)
         else:
             self.assertEqual(self.amenity.name, "")
 
-
     def test_amenity_name_type(self):
         """Test type of 'name' attribute"""
-        self.assertIsInstance(self.amenity.name, str if storageType != 'db' else type(None))
+        if storageType == 'db':
+            self.assertIsNone(self.amenity.name)
+        else:
+            self.assertIsInstance(self.amenity.name, str)
 
-
-        if __name__ == '__main__':
-                unittest.main()
+if __name__ == '__main__':
+    unittest.main()
