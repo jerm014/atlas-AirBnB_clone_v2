@@ -81,5 +81,7 @@ class Place(BaseModel, Base):
 
         @amenities.setter
         def amenities(self, value):
-            if type(value) == Amenity:
+            #  do not compare types, for exact checks use `is` / `is not`,
+            #  for instance checks use `isinstance()`
+            if isinstance(value, Amenity):
                 self.amenity_ids.append(value.id)

@@ -40,11 +40,8 @@ class DBStorage:
         """query on the current database session"""
         new_dict = {}
         for clss in classes:
-            print(f"clss is {clss} and cls is {cls} and classes[clss] is {classes[clss]}")
-            print(f"{cls is None} or {cls is classes[clss]} or {cls == clss}")
             if cls is None or cls is classes[clss] or cls == clss:
                 objs = self.__session.query(classes[clss]).all()
-                print(f"objs is {objs}")
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
                     new_dict[key] = obj
