@@ -171,7 +171,7 @@ class HBNBCommand(cmd.Cmd):
                 key, value = param.split('=')
                 key = key.strip()
                 value = value.strip()
-                
+
                 # Handle value types
                 if value.startswith('"') and value.endswith('"'):
                     value = value[1:-1].replace('_', ' ')
@@ -179,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
                     value = float(value)
                 else:
                     value = int(value)
-                    
+
                 kwargs[key] = value
 
         except ValueError:
@@ -201,7 +201,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the create method """
         print("Creates a class of any type")
         print("[Usage]: create <className>\n")
-
 
     def do_show(self, args):
         """ Method to show an individual object """
