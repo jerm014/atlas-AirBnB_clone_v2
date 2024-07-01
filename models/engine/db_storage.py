@@ -6,7 +6,7 @@ import models
 from models.base_model import BaseModel, Base
 from models import user, state, city, amenity, place, review
 import os
-from django.contrib.auth.models import User
+
 __engine = None
 __session = None
 
@@ -17,15 +17,13 @@ classes = {"Amenity": Amenity,
            "State": State,
            "User": User}
 
+""" Initialize the MySQL Database Storage """
 
-def __init__(self):
-    """ Initialize the MySQL Database Storage """
-
-    username = getenv('HBNB_MYSQL_USER')
-    password = getenv('HBNB_MYSQL_PWD')
-    host = getenv('HBNB_MYSQL_HOST')
-    db_name = getenv('HBNB_MYSQL_DB')
-    connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
+username = getenv('HBNB_MYSQL_USER')
+password = getenv('HBNB_MYSQL_PWD')
+host = getenv('HBNB_MYSQL_HOST')
+db_name = getenv('HBNB_MYSQL_DB')
+connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
 
 
 class DBStorage:

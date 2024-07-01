@@ -55,7 +55,6 @@ class BaseModel:
         from models import storage
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
-        print("calling storage save")
         models.storage.save()
 
     def to_dict(self):
