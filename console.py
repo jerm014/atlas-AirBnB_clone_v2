@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
         class_name = args_list[0]
 
         if class_name not in self.classes:
-            print("** class '{class_name}' doesn't exist**")
+            print(f"** class '{class_name}' doesn't exist**")
             return
 
         kwargs = {}
