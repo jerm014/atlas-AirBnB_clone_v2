@@ -4,7 +4,7 @@
 import sqlalchemy
 import models
 from models.base_model import BaseModel, Base
-from models import user, state, city, amenity, place, review
+from models import User, State, City, Amenity, Place, Review
 import os
 
 __engine = None
