@@ -15,4 +15,3 @@ class City(BaseModel):
     else:
         name = ""
         state_id = ""
-
