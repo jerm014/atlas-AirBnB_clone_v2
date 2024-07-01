@@ -9,6 +9,7 @@ from os import getenv
 Base = declarative_base()
 storage_type = getenv('HBNB_TYPE_STORAGE')
 
+
 class BaseModel:
     """A base class for all hbnb models"""
 
