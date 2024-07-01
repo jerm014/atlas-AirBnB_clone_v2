@@ -3,6 +3,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String, DateTime
 import models
 Base = declarative_base()
 
@@ -15,6 +16,8 @@ class BaseModel:
 #  * represents a column containing a unique string (60 characters)
 #  * can’t be null
 #  * primary key
+
+    id = Column(String(60), nullable=False, primary_key=True)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
