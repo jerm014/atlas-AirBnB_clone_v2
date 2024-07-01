@@ -5,17 +5,12 @@ from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 import models
+from os import getenv
 Base = declarative_base()
-
+storage_type = getenv('HBNB_TYPE_STORAGE')
 
 class BaseModel:
     """A base class for all hbnb models"""
-
-# add in the class BaseModel:
-# * class attribute id
-#  * represents a column containing a unique string (60 characters)
-#  * can’t be null
-#  * primary key
 
     id = Column(String(60), nullable=False, primary_key=True)
 
