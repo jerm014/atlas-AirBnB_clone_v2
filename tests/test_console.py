@@ -39,7 +39,7 @@ class TestHBNBCommand(unittest.TestCase):
         """Test creating a new instance without specifying class name"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd('create')
-            self.assertEqual(output.getvalue().strip(), 
+            self.assertEqual(output.getvalue().strip(),
                              "** class name missing **"
                              )
 
