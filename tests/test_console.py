@@ -10,6 +10,7 @@ class TestHBNBCommand(unittest.TestCase):
 
     def test_create_with_valid_params(self):
         """Test creating a new instance with valid parameters"""
+        pass
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd(
                 'create User first_name="John" last_name="Doe" ' +
