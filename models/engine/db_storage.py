@@ -79,3 +79,11 @@ class DBStorage:
 
         # Use scoped_session to ensure thread-safety
         self.__session = scoped_session(Session)()
+
+    def add_amenity(self, place_id, amenity_id):
+        """ Add an amenity to a place """
+        place = self.__session.query(Place).get(place_id)
+        amenity = self.__session.query(Amenity).get(amenity_id)
+        if place and amenity:
+            place.amenities.append(amenity)
+            self.__session.commit()

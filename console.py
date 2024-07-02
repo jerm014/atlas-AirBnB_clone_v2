@@ -100,6 +100,15 @@ class HBNBCommand(cmd.Cmd):
         """ Prints the help documentation for quit  """
         print("Exits the program with formatting\n")
 
+    def do_add(self, args):
+        place_id = args[0]
+        amenity_id = args[1]
+        if place_id and amenity_id:
+            storage.add_amenity(place_id, amenity_id)
+
+    def help_add(self):
+        print("Adds an amenity to a place. add <place_id> <amenity_id>\n")
+
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
         print()

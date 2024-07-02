@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from models.amenity import Amenity
-from models.review import Review
 from models.base_model import BaseModel, Base, storage_type
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
@@ -74,7 +72,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """Get/set linked Amenities."""
             amenity_list = []
-            for amenity in list(models.storage.all(Amenity).values()):
+            for amenity in list(models.storage.all("Amenity").values()):
                 if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
             return amenity_list

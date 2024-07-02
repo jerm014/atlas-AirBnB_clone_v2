@@ -67,3 +67,9 @@ class FileStorage:
             return
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         del self.__objects[key]
+
+    def add_amenity(place_id, amenity_id):
+        """ this isn't implmented for FileStorage """
+        message = "if you were using the database, this would add "
+        message = f"Amenity {amenity_id} to Place {place_id}."
+        print(message)
