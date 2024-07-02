@@ -1,4 +1,3 @@
-*.swp
-*.pyc
+**.swp
+**.pyc
 main_place_amenities.py
-tests/test_models/test_engine/__pycache__/*.pyc
