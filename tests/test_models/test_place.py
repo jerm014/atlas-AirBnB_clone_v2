@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-""" """
+""" Tests for Place """
+import unittest
 from tests.test_models.test_base_model import test_BaseModel
 from models.place import Place
 from models import storage_type
 
 
-class test_Place(test_BaseModel):
+class test_Place(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):

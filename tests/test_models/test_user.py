@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-""" """
+""" Test for User """
+import unittest
 from tests.test_models.test_base_model import test_BaseModel
 from models.user import User
 from models import storage_type
 
 
-class test_User(test_BaseModel):
+class test_User(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):

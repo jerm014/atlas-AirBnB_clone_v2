@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-""" """
+""" Tests for State """
+import unittest
 from tests.test_models.test_base_model import test_BaseModel
 from models.state import State
 from models import storage_type
 
 
-class test_State(test_BaseModel):
+class test_State(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):
