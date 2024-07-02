@@ -29,8 +29,8 @@ class FileStorage:
         if cls:
             obj = {}
             for k, v in self.__objects.items():
-                if v.__class__.__name__ == cls.__name__:
-                    obj[k] = v
+                if v.__class__.__name__ == cls:
+                    obj[k] = v.to_dict()
             return obj
         else:
             return self.__objects
