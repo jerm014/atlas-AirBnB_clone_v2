@@ -27,6 +27,8 @@ class FileStorage:
         If cls is provided, returns only models of that type.
         """
         if cls:
+            if type(cls) != str:
+                cls = cls.__name__
             obj = {}
             for k, v in self.__objects.items():
                 if v.__class__.__name__ == cls:
