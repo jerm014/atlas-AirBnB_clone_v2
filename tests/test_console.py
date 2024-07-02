@@ -3,9 +3,8 @@ import unittest
 from unittest.mock import patch
 from io import StringIO
 import sys
-sys.path.append('../') # Add the parent directory to the Python path
-import console
-HBNBCommand = console.HBNBCommand
+sys.path.append('../') #  Add the parent directory to the Python path
+from console import HBNBCommand
 
 
 class test_HBNBCommand(unittest.TestCase):
