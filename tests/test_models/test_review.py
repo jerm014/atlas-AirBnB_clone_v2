@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """ """
-from tests.test_models.test_base_model import test_basemodel
+from tests.test_models.test_base_model import test_BaseModel
 from models.review import Review
+from models import storage_type
 
 
-class test_Review(unittest.TestCase):
+class test_Review(test_BaseModel):
     """ """
 
     def __init__(self, *args, **kwargs):

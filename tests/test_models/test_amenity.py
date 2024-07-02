@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """This module is a set of unit tests for Amenity"""
-import unittest
+from tests.test_models.test_base_model import test_BaseModel
 from models.amenity import Amenity
 from models import storage_type
 
 
-class test_Amenity(unittest.TestCase):
+class test_Amenity(test_BaseModel):
     """Class test for Amenity"""
 
     def setUp(self):
