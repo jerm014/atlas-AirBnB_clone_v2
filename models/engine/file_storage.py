@@ -26,11 +26,14 @@ class FileStorage:
         Returns a dictionary of models currently in storage.
         If cls is provided, returns only models of that type.
         """
-        if cls is None:
-            return FileStorage.__objects
+        if cls:
+            obj = {}
+            for k, v in self.__objects.items():
+                if v.__class__.__name__ == cls.__name__:
+                    obj[k] = v
+            return obj
         else:
-            return {k: v for k, v in FileStorage.__objects.items()
-                    if v.__class__ == cls}
+            return self.__objects
 
     def new(self, obj):
         """Set in __objects obj with key <obj_class_name>.id"""
