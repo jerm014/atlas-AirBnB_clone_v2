@@ -30,7 +30,7 @@ class FileStorage:
             obj = {}
             for k, v in self.__objects.items():
                 if v.__class__.__name__ == cls:
-                    obj[k] = v.remove_sa()
+                    obj[k] = v
             return obj
         else:
             return self.__objects
