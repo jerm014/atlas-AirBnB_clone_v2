@@ -61,11 +61,10 @@ class FileStorage:
         except FileNotFoundError:
             return
 
-    def delete(self, obj=None):
+    def delete(self, key=None):
         """ Deletes an object from __objects """
-        if obj is None:
+        if key is None:
             return
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
         del self.__objects[key]
 
     def add_amenity(self, place_id, amenity_id):

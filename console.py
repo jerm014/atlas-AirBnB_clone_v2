@@ -208,6 +208,9 @@ class HBNBCommand(cmd.Cmd):
         print("Shows an individual instance of a class")
         print("[Usage]: show <className> <objectId>\n")
 
+    def do_delete(self, args):
+        self.do_destroy(args)
+
     def do_destroy(self, args):
         """ Destroys a specified object """
         new = args.partition(" ")
@@ -231,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del storage.all()[key]
+            storage.delete(key)
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -348,7 +351,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** attribute name missing **")
                     return
                 if not att_val:  # check for att_value
-                    print("** value missing **")
+                    print(f"** {att_name} value missing **")
                     return
                 # type cast as necessary
                 if att_name in HBNBCommand.types:

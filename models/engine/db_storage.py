@@ -45,14 +45,14 @@ class DBStorage:
             query = self.__session.query(cls)
             for elem in query:
                 key = "{}.{}".format(type(elem).__name__, elem.id)
-                del elem.__dict__["_sa_instance_state"]
+                # del elem.__dict__["_sa_instance_state"]
                 all_dict[key] = elem
         else:
             for clases in [State, City, User, Place, Review, Amenity]:
                 query = self.__session.query(clases)
                 for elem in query:
                     key = "{}.{}".format(type(elem).__name__, elem.id)
-                    del elem.__dict__["_sa_instance_state"]
+                    # del elem.__dict__["_sa_instance_state"]
                     all_dict[key] = elem
         return (all_dict)
 
@@ -64,11 +64,23 @@ class DBStorage:
         """ Commit changes to database """
         self.__session.commit()
 
-    def delete(self, obj=None):
+    def delete(self, key=None):
         """ Delete an object from the current session """
+        split_key = key.split(".")
+        class_name = split_key[0]
+        obj_id = split_key[1]
+        obj = {}
+        if class_name not in classes:
+            return
+        for o in self.all(class_name).items():
+            if o[1].id == obj_id:
+                obj = o[1]
+                break
         if obj is None:
+            print(" ** object not found to delete ** ")
             return
         self.__session.delete(obj)
+        print(f"Deleted {key}")
 
     def reload(self):
         """ Create all tables in the database """
