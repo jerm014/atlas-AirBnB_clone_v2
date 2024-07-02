@@ -12,7 +12,8 @@ class TestHBNBCommand(unittest.TestCase):
         """Test creating a new instance with valid parameters"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd(
-                'create User first_name="John" last_name="Doe" password="Hunter2"'
+                'create User first_name="John" last_name="Doe" ' +
+                'password="Hunter2"'
                 )
             instance_id = output.getvalue().strip()
             self.assertTrue(len(instance_id) > 0)
