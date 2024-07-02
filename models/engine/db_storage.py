@@ -6,7 +6,7 @@ from models.base_model import BaseModel, Base
 from models import User, State, City, Amenity, Place, Review
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemapty.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 __engine = None
 __session = None
