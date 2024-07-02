@@ -22,7 +22,7 @@ class TestHBNBCommand(unittest.TestCase):
                 # Clear the buffer
                 output.truncate(0)
                 output.seek(0)
-                # Verify that the instance has been created with correct attributes
+                # Verify instance has been created with correct attributes
                 HBNBCommand().onecmd(f'show User {instance_id}')
                 instance_output = output.getvalue().strip()
                 print(instance_output)
