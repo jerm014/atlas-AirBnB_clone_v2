@@ -8,6 +8,9 @@ from console import HBNBCommand
 class test_HBNBCommand(unittest.TestCase):
     """Unit tests for HBNBCommand class"""
 
+    def test_console(self):
+        pass
+
     def test_create_with_valid_params(self):
         """Test creating a new instance with valid parameters"""
         pass
