@@ -23,6 +23,7 @@ class TestHBNBCommand(unittest.TestCase):
             # Verify that the instance has been created with correct attributes
             HBNBCommand().onecmd(f'show User {instance_id}')
             instance_output = output.getvalue().strip()
+            print(instance_output)
             self.assertIn("John", instance_output)
             self.assertIn("Doe", instance_output)
             self.assertIn("Hunter2", instance_output)

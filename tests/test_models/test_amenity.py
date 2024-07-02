@@ -2,7 +2,7 @@
 """This module is a set of unit tests for Amenity"""
 import unittest
 from models.amenity import Amenity
-from models import storageType
+from models import storage_type
 
 
 class TestAmenity(unittest.TestCase):
@@ -22,14 +22,14 @@ class TestAmenity(unittest.TestCase):
 
     def test_amenity_name_initial_value(self):
         """Test initial value of 'name' attribute"""
-        if storageType == 'db':
+        if storage_type == 'db':
             self.assertIsNone(self.amenity.name)
         else:
             self.assertEqual(self.amenity.name, "")
 
     def test_amenity_name_type(self):
         """Test type of 'name' attribute"""
-        if storageType == 'db':
+        if storage_type == 'db':
             self.assertIsNone(self.amenity.name)
         else:
             self.assertIsInstance(self.amenity.name, str)
