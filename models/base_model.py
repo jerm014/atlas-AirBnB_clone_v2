@@ -60,6 +60,12 @@ class BaseModel:
         if '_sa_instance_state' in dictionary:
             del dictionary['_sa_instance_state']
         return dictionary
+    
+    def remove_sa(self):
+        """Removes the _sa_instance_state key from the dictionary"""
+        if '_sa_instance_state' in self.__dict__:
+            del self.__dict__['_sa_instance_state']
+        return self.__dict__
 
     def delete(self):
         """deletes an instance based on its id"""
