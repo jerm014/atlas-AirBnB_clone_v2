@@ -5,7 +5,7 @@ from io import StringIO
 from console import HBNBCommand
 
 
-class TestHBNBCommand(unittest.TestCase):
+class test_HBNBCommand(unittest.TestCase):
     """Unit tests for HBNBCommand class"""
 
     def test_create_with_valid_params(self):

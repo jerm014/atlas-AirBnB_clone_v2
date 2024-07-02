@@ -5,7 +5,7 @@ from models.amenity import Amenity
 from models import storage_type
 
 
-class TestAmenity(unittest.TestCase):
+class test_Amenity(unittest.TestCase):
     """Class test for Amenity"""
 
     def setUp(self):
