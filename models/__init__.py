@@ -10,11 +10,8 @@ from models.user import User
 if storage_type == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
-elif storage_type == "fs":
+else:
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
-else:
-    raise ValueError("Invalid storage type")
-    exit(1)
 
 storage.reload()
