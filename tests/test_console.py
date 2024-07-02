@@ -15,7 +15,7 @@ class test_HBNBCommand(unittest.TestCase):
         """Test creating a new instance with valid parameters"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd(
-                'create User first_name="John"' + 
+                'create User first_name="John"' +
                 ' last_name="Doe"' +
                 ' password="Hunter2"'
                 )
@@ -39,29 +39,29 @@ class test_HBNBCommand(unittest.TestCase):
                 'create InvalidClass name="John Doe"'
                 )
             self.assertEqual(output.getvalue().strip(),
-                                "** class 'InvalidClass' doesn't exist**"
-                                )
+                             "** class 'InvalidClass' doesn't exist**"
+                             )
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd(
                 'create InvalidClass name="John Doe"'
                 )
             self.assertEqual(output.getvalue().strip(),
-                                "** class 'InvalidClass' doesn't exist**")
+                             "** class 'InvalidClass' doesn't exist**")
 
     def test_create_with_missing_class_name(self):
         """Test creating a new instance without specifying class name"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd('create')
             self.assertEqual(output.getvalue().strip(),
-                                "** class name missing **"
-                                )
+                             "** class name missing **"
+                             )
 
     def test_create_with_invalid_params(self):
         """Test creating a new instance with invalid parameters"""
         with patch('sys.stdout', new=StringIO()) as output:
             HBNBCommand().onecmd('create User name=John Doe age=thirty')
             self.assertIn("** Invalid parameter value **",
-                         output.getvalue().strip())
+                          output.getvalue().strip())
 
 
 if __name__ == "__main__":
