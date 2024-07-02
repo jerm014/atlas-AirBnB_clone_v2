@@ -40,7 +40,7 @@ class DBStorage:
         """ returns a dictionary of some things or all things """
         all_dict = {}
         if cls:
-            if type(cls) is str:
+            if isinstance(cls, str):
                 cls = eval(cls)
             query = self.__session.query(cls)
             for elem in query:
