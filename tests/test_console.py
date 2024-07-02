@@ -57,8 +57,8 @@ class test_HBNBCommand(unittest.TestCase):
             with patch('sys.stdout', new=StringIO()) as output:
                 HBNBCommand().onecmd('create')
                 self.assertEqual(output.getvalue().strip(),
-                                "** class name missing **"
-                                )
+                                 "** class name missing **"
+                                 )
 
     def test_create_with_invalid_params(self):
         """Test creating a new instance with invalid parameters"""
