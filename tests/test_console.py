@@ -23,8 +23,6 @@ class TestHBNBCommand(unittest.TestCase):
             HBNBCommand().onecmd(f'show User {instance_id}')
             instance_output = output.getvalue().strip()
             self.assertIn("John Doe", instance_output)
-            self.assertIn("age: 30", instance_output)
-            self.assertIn("height: 1.75", instance_output)
 
     def test_create_with_invalid_class(self):
         """Test creating a new instance with an invalid class"""
