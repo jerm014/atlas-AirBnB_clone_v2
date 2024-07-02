@@ -2,7 +2,8 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
-from console import HBNBCommand
+import console
+HBNBCommand = console.HBNBCommand
 
 
 class test_HBNBCommand(unittest.TestCase):
