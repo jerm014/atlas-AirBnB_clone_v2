@@ -5,11 +5,8 @@ import models
 from models.base_model import BaseModel, Base
 from models import User, State, City, Amenity, Place, Review
 from os import getenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exc
 from sqlalchemy.orm import scoped_session, sessionmaker
-
-__engine = None
-__session = None
 
 classes = {"Amenity": Amenity,
            "City": City,
@@ -107,13 +104,21 @@ class DBStorage:
         if amenity is None:
             print(" ** Amenity not found ** ")
             return False
-        
+
         if place and amenity:
             place.amenities.append(amenity)
             self.__session.add(place)
             try:
                 self.__session.commit()
+                print(" ** Amenity and Place linked ** ")
                 return True
+            except exc.IntegrityError as e:
+                if 'Duplicate entry' in str(e.orig):
+                    print(" ** Amenity and Place already linked ** ")
+                else:
+                    print(e)
+                self.__session.rollback()
+                return False
             except Exception as e:
                 print(e)
                 self.__session.rollback()
@@ -132,18 +137,25 @@ class DBStorage:
         if amenity is None:
             print(" ** Amenity not found ** ")
             return False
-        
+
         if place and amenity:
             if amenity in place.amenities:
                 place.amenities.remove(amenity)
                 self.__session.add(place)
                 try:
                     self.__session.commit()
+                    print(" ** Amenity and Place unlinked ** ")
                     return True
+                # Handle MySQLdb._exceptions.IntegrityError here
+
+                except self.__engine._exceptions.IntegrityError as e:
+                    print(e[1])
+                    self.__session.rollback()
+                    return False
                 except Exception as e:
                     print(e)
                     self.__session.rollback()
                     return False
             else:
-                print(" ** Amenity wasn't attached to Place ** ")
+                print(" ** Amenity and Place not linked ** ")
                 return False

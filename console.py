@@ -16,12 +16,12 @@ class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
     last_value = {
-              "User": "",
-              "Place": "",
-              "State": "",
-              "City": "",
-              "Amenity": "",
-              "Review": ""
+              "User": "None",
+              "Place": "None",
+              "State": "None",
+              "City": "None",
+              "Amenity": "None",
+              "Review": "None"
               }
 
     # determines prompt for interactive/non-interactive modes
@@ -103,12 +103,12 @@ class HBNBCommand(cmd.Cmd):
         """ Method to retrieve last object"""
         if command:
             if command in self.last_value:
-                print(self.last_value[command])
+                print(f"{command} {self.last_value[command]}")
             else:
-                print("** class doesn't exist **")
+                print(f"** Class {command} doesn't exist **")
         else:
             for key, value in self.last_value.items():
-                print(f"{key} = {value}")
+                print(f"{key} {value}")
 
     def help_last(self):
         """ Prints the help documentation for last """
@@ -166,7 +166,7 @@ class HBNBCommand(cmd.Cmd):
                 amenity_id = args[i+1]
 
         if amenity_id and place_id:
-            print(f"adding {args[0]} ({args[1]}) to {args[2]} ({args[3]})")
+            # print(f"adding {args[0]} ({args[1]}) to {args[2]} ({args[3]})")
             storage.link_amenity(amenity_id, place_id)
         elif amenity_id is None:
             print(" ** invalid Amenity **")
@@ -196,7 +196,8 @@ class HBNBCommand(cmd.Cmd):
                 amenity_id = args[i+1]
 
         if amenity_id and place_id:
-            print(f"removing {args[0]} ({args[1]}) from {args[2]} ({args[3]})")
+            # print(f"removing {args[0]} ({args[1]}) from
+            # {args[2]} ({args[3]})")
             storage.unlink_amenity(amenity_id, place_id)
         elif amenity_id is None:
             print(" ** invalid Amenity **")
@@ -252,7 +253,6 @@ class HBNBCommand(cmd.Cmd):
                     value = float(value)
                 elif '$' in value:
                     value = self.last_value[value[1:]]
-                    print(f"Value is {value}")
                 else:
                     value = int(value)
 
@@ -476,6 +476,54 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information\n")
         print("  update <className> <id> [name value[ name value ...]]\n")
+
+    def do_Amenity(self, args):
+        """ Stores an Amenity id to $Amenity """
+        self.last_value["Amenity"] = args
+
+    def do_Place(self, args):
+        """ Stores a Place id to $Place """
+        self.last_value["Place"] = args
+
+    def do_State(self, args):
+        """ Stores a State id to $State """
+        self.last_value["State"] = args
+
+    def do_City(self, args):
+        """ Stores a City id to $City """
+        self.last_value["City"] = args
+
+    def do_Review(self, args):
+        """ Stores a Review id to $Review """
+        self.last_value["Review"] = args
+
+    def do_User(self, args):
+        """ Stores a User id to $User """
+        self.last_value["User"] = args
+
+    def help_Amenity(self):
+        print("Stores an Amenity id to $Amenity\n")
+        print("  Amenity <id>\n")
+
+    def help_Place(self):
+        print("Stores a Place id to $Place\n")
+        print("  Place <id>\n")
+
+    def help_State(self):
+        print("Stores a State id to $State\n")
+        print("  State <id>\n")
+
+    def help_City(self):
+        print("Stores a City id to $City\n")
+        print("  City <id>\n")
+
+    def help_Review(self):
+        print("Stores a Review id to $Review\n")
+        print("  Review <id>\n")
+
+    def help_User(self):
+        print("Stores a User id to $User\n")
+        print("  User <id>\n")
 
 
 if __name__ == "__main__":
