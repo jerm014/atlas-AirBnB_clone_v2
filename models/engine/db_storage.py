@@ -29,12 +29,12 @@ connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
 
 class DBStorage:
     """MySQL database via sqlalchemy"""
-    __engine = None
+    __engine = create_engine(connection)
     __session = None
 
     def __init__(self):
         """make a DBStorage object and connect to the database"""
-        self.__engine = create_engine(connection)
+        pass
 
     def all(self, cls=None):
         """ returns a dictionary of some things or all things """
@@ -42,11 +42,12 @@ class DBStorage:
         if cls:
             if isinstance(cls, str):
                 cls = eval(cls)
-            query = self.__session.query(cls)
-            for elem in query:
-                key = "{}.{}".format(type(elem).__name__, elem.id)
-                # del elem.__dict__["_sa_instance_state"]
-                all_dict[key] = elem
+                for clases in [State, City, User, Place, Review, Amenity]:
+                    query = self.__session.query(clases)
+                    for elem in query:
+                        key = "{}.{}".format(type(elem).__name__, elem.id)
+                        if isinstance(elem, cls):
+                            all_dict[key] = elem
         else:
             for clases in [State, City, User, Place, Review, Amenity]:
                 query = self.__session.query(clases)
@@ -58,7 +59,9 @@ class DBStorage:
 
     def new(self, obj):
         """ Add an object to the session """
-        self.__session.add(obj)
+        # add the obj to the __session if it isn't already there
+        if obj not in self.__session:
+            self.__session.add(obj)
 
     def save(self):
         """ Commit changes to database """
@@ -84,7 +87,7 @@ class DBStorage:
 
     def reload(self):
         """ Create all tables in the database """
-
+        
         Base.metadata.create_all(self.__engine)
         # Create a new session using sessionmaker
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
@@ -92,10 +95,55 @@ class DBStorage:
         # Use scoped_session to ensure thread-safety
         self.__session = scoped_session(Session)()
 
-    def add_amenity(self, place_id, amenity_id):
+    def link_amenity(self, amenity_id, place_id):
         """ Add an amenity to a place """
-        place = self.__session.query(Place).get(place_id)
-        amenity = self.__session.query(Amenity).get(amenity_id)
+        place = amenity = None
+        place = self.all('Place')['Place.' + place_id]
+        amenity = self.all('Amenity')['Amenity.' + amenity_id]
+
+        if place is None:
+            print(" ** Place not found ** ")
+            return False
+        if amenity is None:
+            print(" ** Amenity not found ** ")
+            return False
+        
         if place and amenity:
             place.amenities.append(amenity)
-            self.__session.commit()
+            self.__session.add(place)
+            try:
+                self.__session.commit()
+                return True
+            except Exception as e:
+                print(e)
+                self.__session.rollback()
+                return False
+
+
+    def unlink_amenity(self, amenity_id, place_id):
+        """ Remove an amenity from a place """
+        place = amenity = None
+        place = self.all('Place')['Place.' + place_id]
+        amenity = self.all('Amenity')['Amenity.' + amenity_id]
+
+        if place is None:
+            print(" ** Place not found ** ")
+            return False
+        if amenity is None:
+            print(" ** Amenity not found ** ")
+            return False
+        
+        if place and amenity:
+            if amenity in place.amenities:
+                place.amenities.remove(amenity)
+                self.__session.add(place)
+                try:
+                    self.__session.commit()
+                    return True
+                except Exception as e:
+                    print(e)
+                    self.__session.rollback()
+                    return False
+            else:
+                print(" ** Amenity wasn't attached to Place ** ")
+                return False

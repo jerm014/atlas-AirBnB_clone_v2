@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage, classes
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -15,14 +15,20 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
 
+    last_value = {
+              "User": "",
+              "Place": "",
+              "State": "",
+              "City": "",
+              "Amenity": "",
+              "Review": ""
+              }
+
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+    classes = classes
+
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -48,6 +54,7 @@ class HBNBCommand(cmd.Cmd):
             return line
 
         try:  # parse line left to right
+            print("parsing line")
             pline = line[:]  # parsed line
 
             # isolate <class name>
@@ -92,6 +99,49 @@ class HBNBCommand(cmd.Cmd):
             print('(hbnb) ', end='')
         return stop
 
+    def do_last(self, command):
+        """ Method to retrieve last object"""
+        if command:
+            if command in self.last_value:
+                print(self.last_value[command])
+            else:
+                print("** class doesn't exist **")
+        else:
+            for key, value in self.last_value.items():
+                print(f"{key} = {value}")
+
+    def help_last(self):
+        """ Prints the help documentation for last """
+        from uuid import uuid4
+        temp_state = str(uuid4())
+        temp_city = str(uuid4())
+        print("Shows the value(s) of the stored variables\n")
+        print("  last [class name]\n")
+        print("You can use Tokens in your commands to represent an id for" +
+              " a previously create[d] or show[n] object.\n")
+        print("For example:\n")
+        print("  (hbnb) create State name=\"Texas\"")
+        print("  " + temp_state)
+        print("  (hbnb) last")
+        print("  User =")
+        print("  Place =")
+        print(f"  State = {temp_state}")
+        print("  City =")
+        print("  Amenity =")
+        print("  Review =")
+        print("  (hbnb) create City name=\"Dallas\" state_id=$State")
+        print("  " + temp_city)
+        print("  (hbnb) last")
+        print("  User =")
+        print("  Place =")
+        print(f"  State = {temp_state}")
+        print(f"  City = {temp_city}")
+        print("  Amenity =")
+        print("  Review =")
+        print("  (hbnb) last State")
+        print(f"  State = {temp_state}")
+        print("  (hbnb) _\n")
+
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
         exit()
@@ -100,14 +150,65 @@ class HBNBCommand(cmd.Cmd):
         """ Prints the help documentation for quit  """
         print("Exits the program with formatting\n")
 
-    def do_add(self, args):
-        place_id = args[0]
-        amenity_id = args[1]
-        if place_id and amenity_id:
-            storage.add_amenity(place_id, amenity_id)
+    def do_link(self, command):
+        """ link an amenity to a place """
+        args = command.split(" ")
+        place_id = amenity_id = None
 
-    def help_add(self):
-        print("Adds an amenity to a place. add <place_id> <amenity_id>\n")
+        for i, v in enumerate(args):
+            if '$' in v:
+                args[i] = self.last_value[v[1:]]
+
+        for i, v in enumerate(args):
+            if str(v).lower() == "place":
+                place_id = args[i+1]
+            if str(v).lower() == "amenity":
+                amenity_id = args[i+1]
+
+        if amenity_id and place_id:
+            print(f"adding {args[0]} ({args[1]}) to {args[2]} ({args[3]})")
+            storage.link_amenity(amenity_id, place_id)
+        elif amenity_id is None:
+            print(" ** invalid Amenity **")
+        else:
+            print(" ** invalid Place **")
+
+    def help_link(self):
+        """ Prints the help documentation for link """
+        print("Links an object to another object through a many-to-many " +
+              "join.\n")
+        print("  link Place <place_id> [to] Amenity <amenity_id>")
+        print("  link Amenity <amenity_id> [to] Place <place_id>\n")
+
+    def do_unlink(self, command):
+        """ unlink an amenity from a place """
+        args = command.split(" ")
+        place_id = amenity_id = None
+
+        for i, v in enumerate(args):
+            if '$' in v:
+                args[i] = self.last_value[v[1:]]
+
+        for i, v in enumerate(args):
+            if str(v).lower() == "place":
+                place_id = args[i+1]
+            if str(v).lower() == "amenity":
+                amenity_id = args[i+1]
+
+        if amenity_id and place_id:
+            print(f"removing {args[0]} ({args[1]}) from {args[2]} ({args[3]})")
+            storage.unlink_amenity(amenity_id, place_id)
+        elif amenity_id is None:
+            print(" ** invalid Amenity **")
+        else:
+            print(" ** invalid Place **")
+
+    def help_unlink(self):
+        """ Prints the help documentation for unlink """
+        print("Unlinks an object from another object through a many-to-many " +
+              "join.\n")
+        print("  unlink Place <place_id> [from] Amenity <amenity_id>")
+        print("  unlink Amenity <amenity_id> [from] Place <place_id>\n")
 
     def do_EOF(self, arg):
         """ Handles EOF to exit program """
@@ -149,6 +250,9 @@ class HBNBCommand(cmd.Cmd):
                     value = value[1:-1].replace('_', ' ')
                 elif '.' in value:
                     value = float(value)
+                elif '$' in value:
+                    value = self.last_value[value[1:]]
+                    print(f"Value is {value}")
                 else:
                     value = int(value)
 
@@ -166,13 +270,14 @@ class HBNBCommand(cmd.Cmd):
             new_instance = self.classes[class_name](**kwargs)
             new_instance.save()
             print(new_instance.id)
+            self.last_value[class_name] = new_instance.id
         except Exception as e:
             print(f"** Error creating instance: {e} **")
 
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("  create <className> [attribute=value[, ...]]\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -200,16 +305,22 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             print(storage.all(c_name)[key])
+            self.last_value[c_name] = c_id
         except KeyError:
             print("** no instance found **")
 
     def help_show(self):
         """ Help information for the show command """
         print("Shows an individual instance of a class")
-        print("[Usage]: show <className> <objectId>\n")
+        print("  show <className> <objectId>\n")
 
     def do_delete(self, args):
         self.do_destroy(args)
+
+    def help_delete(self):
+        """ Help information for the delete command """
+        print("** Delete is a synonym for destory\n")
+        self.help_destroy(["Deletes", "delete"])
 
     def do_destroy(self, args):
         """ Destroys a specified object """
@@ -239,10 +350,10 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    def help_destroy(self):
+    def help_destroy(self, delete=["Destorys","destroy"]):
         """ Help information for the destroy command """
-        print("Destroys an individual instance of a class")
-        print("[Usage]: destroy <className> <objectId>\n")
+        print(f"{delete[0]} an individual instance of a class\n")
+        print(f"  {delete[1]} <className> <objectId>\n")
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
@@ -253,31 +364,30 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage.all(args).items():
+            for k, v in storage.all().items():
                 if k.split('.')[0] == args:
                     print(v)
         else:
             for k, v in storage.all().items():
                 print(v)
 
-        # print(print_list)
-
     def help_all(self):
         """ Help information for the all command """
-        print("Shows all objects, or all of a class")
-        print("[Usage]: all <className>\n")
+        print("Shows all objects, or all objects of a class\n")
+        print("  all [className]\n")
 
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
 
     def help_count(self):
         """ """
-        print("Usage: count <class_name>")
+        print("Counts the number of objects in a class\n")
+        print("  count <class_name>\n")
 
     def do_update(self, args):
         """ Updates a certain object with new info """
@@ -358,14 +468,14 @@ class HBNBCommand(cmd.Cmd):
                     att_val = HBNBCommand.types[att_name](att_val)
 
                 # update dictionary with name, value pair
-                new_dict.__dict__.update({att_name: att_val})
+                setattr(new_dict, att_name, att_val)
 
         new_dict.save()  # save updates to file
 
     def help_update(self):
         """ Help information for the update class """
-        print("Updates an object with new information")
-        print("Usage: update <className> <id> <attName> <attVal>\n")
+        print("Updates an object with new information\n")
+        print("  update <className> <id> [name value[ name value ...]]\n")
 
 
 if __name__ == "__main__":

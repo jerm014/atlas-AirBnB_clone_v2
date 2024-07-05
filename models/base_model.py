@@ -62,9 +62,9 @@ class BaseModel:
         return dictionary
 
     def remove_sa(self):
-        """Removes the _sa_instance_state key from the dictionary"""
-        if '_sa_instance_state' in self.__dict__:
-            del self.__dict__['_sa_instance_state']
+        """UNUSED: Removes the _sa_instance_state key from the dictionary"""
+        # if '_sa_instance_state' in self.__dict__:
+        #    del self.__dict__['_sa_instance_state']
         return self.__dict__
 
     def delete(self):
