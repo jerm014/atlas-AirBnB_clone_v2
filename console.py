@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models import storage, classes
+from models import storage, classes, out_format
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -27,6 +27,7 @@ class HBNBCommand(cmd.Cmd):
               "Review": "None"
               }
 
+    out_format = out_format
     classes = classes
 
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
@@ -355,7 +356,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
+        out_format = BaseModel.getformat()
 
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
@@ -363,15 +364,15 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all().items():
-                print("{\"objects\": [")
+                if out_format == "json": print("{\"objects\": [")
                 if k.split('.')[0] == args:
                     print(v)
-                print("]}")
+                if out_format == "json": print("]}")
         else:
-            print("{\"objects\": [")
+            if out_format == "json": print("{\"objects\": [")
             for k, v in storage.all().items():
                 print(str(v).replace("'", "\"", -1))
-            print("]}")
+            if out_format == "json": print("]}")
 
     def help_all(self):
         """ Help information for the all command """
