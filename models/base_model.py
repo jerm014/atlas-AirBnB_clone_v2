@@ -64,6 +64,10 @@ class BaseModel:
         """ update the output format for show and all """
         models.out_format = args
 
+    def getformat():
+        """ return the output format for show and all """
+        return models.out_format
+
     def save(self):
         """Updates updated_at with current time when instance is changed"""
         from models import storage
