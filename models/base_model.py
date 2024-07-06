@@ -38,8 +38,31 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-        return '[{}] ({}) {}'.format(cls, self.id, self.remove_sa())
+        exclude = ['id', '_sa_instance_state', 'created_at', 'updated_at']
+        last = ['created_at', 'updated_at']
+        if models.out_format == "pretty":
+            width = 59
+            cls = "+" + "-" * (width - 2) + "+\n"
+            cls += f"| {self.__class__.__name__.ljust(8)} {self.id.rjust(46)} |\n"
+            cls += "+" + "-" * (width - 2) + "+\n"
+            for k, v in self.__dict__.items():
+                if k not in exclude:
+                    cls += f"| {k.ljust(16)} | {str(v).ljust(36)} |\n"
+            for k, v in self.__dict__.items():
+                if k in last:
+                    cls += f"| {k.ljust(16)} | {str(v).ljust(36)} |\n"
+            cls += "+" + "-" * (width - 2) + "+\n"
+            return cls
+        elif models.out_format == "json":
+            return "{\"type\": \"" + f"{self.__class__.__name__}\", " + \
+                   f"\"data\": {self.remove_sa()}" + "},"
+        else:
+            cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+            return '[{}] ({}) {}'.format(cls, self.id, self.remove_sa())
+
+    def setformat(args):
+        """ update the output format for show and all """
+        models.out_format = args
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
@@ -62,10 +85,14 @@ class BaseModel:
         return dictionary
 
     def remove_sa(self):
-        """UNUSED: Removes the _sa_instance_state key from the dictionary"""
-        # if '_sa_instance_state' in self.__dict__:
-        #    del self.__dict__['_sa_instance_state']
-        return self.__dict__
+        """
+        return a copy of the dictionary but
+        with the _sa_instance_state key removed
+        """
+        new_dict = self.__dict__.copy()
+        if '_sa_instance_state' in new_dict:
+            del new_dict['_sa_instance_state']
+        return new_dict
 
     def delete(self):
         """deletes an instance based on its id"""

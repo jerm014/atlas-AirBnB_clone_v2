@@ -124,7 +124,6 @@ class DBStorage:
                 self.__session.rollback()
                 return False
 
-
     def unlink_amenity(self, amenity_id, place_id):
         """ Remove an amenity from a place """
         place = amenity = None

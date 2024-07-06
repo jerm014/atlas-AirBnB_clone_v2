@@ -7,6 +7,7 @@ from models.place import Place
 from models.review import Review
 from models.user import User
 
+out_format = "pretty"
 
 classes = {
            'BaseModel': BaseModel,

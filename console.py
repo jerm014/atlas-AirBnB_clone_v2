@@ -11,9 +11,12 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+# determines prompt for interactive/non-interactive modes
+p = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
+    prompt = p
 
     last_value = {
               "User": "None",
@@ -23,9 +26,6 @@ class HBNBCommand(cmd.Cmd):
               "Amenity": "None",
               "Review": "None"
               }
-
-    # determines prompt for interactive/non-interactive modes
-    prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = classes
 
@@ -39,7 +39,7 @@ class HBNBCommand(cmd.Cmd):
     def preloop(self):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb)')
+            print(p)
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
@@ -96,7 +96,7 @@ class HBNBCommand(cmd.Cmd):
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
         if not sys.__stdin__.isatty():
-            print('(hbnb) ', end='')
+            print(f"{p} ", end="")
         return stop
 
     def do_last(self, command):
@@ -115,32 +115,18 @@ class HBNBCommand(cmd.Cmd):
         from uuid import uuid4
         temp_state = str(uuid4())
         temp_city = str(uuid4())
-        print("Shows the value(s) of the stored variables\n")
+
+        print("\nShows the value(s) of the stored variables\n")
         print("  last [class name]\n")
         print("You can use Tokens in your commands to represent an id for" +
               " a previously create[d] or show[n] object.\n")
-        print("For example:\n")
-        print("  (hbnb) create State name=\"Texas\"")
-        print("  " + temp_state)
-        print("  (hbnb) last")
-        print("  User =")
-        print("  Place =")
-        print(f"  State = {temp_state}")
-        print("  City =")
-        print("  Amenity =")
-        print("  Review =")
-        print("  (hbnb) create City name=\"Dallas\" state_id=$State")
-        print("  " + temp_city)
-        print("  (hbnb) last")
-        print("  User =")
-        print("  Place =")
-        print(f"  State = {temp_state}")
-        print(f"  City = {temp_city}")
-        print("  Amenity =")
-        print("  Review =")
-        print("  (hbnb) last State")
-        print(f"  State = {temp_state}")
-        print("  (hbnb) _\n")
+        print(f"For example:\n  {p}create State name=\"Texas\"")
+        print(f"  {temp_state}\n  {p}last\n  User\n  Place")
+        print(f"  State {temp_state}\n  City\n  Amenity\n  Review")
+        print(f"  {p}create City name=\"Dallas\" state_id=$State")
+        print(f"  {temp_city}\n  {p}last\n  User\n  Place")
+        print(f"  State {temp_state}\n  City {temp_city}\n  Amenity\n  Review")
+        print(f"  {p}last State\n  State {temp_state}\n  {p} _\n")
 
     def do_quit(self, command):
         """ Method to exit the HBNB console"""
@@ -148,7 +134,16 @@ class HBNBCommand(cmd.Cmd):
 
     def help_quit(self):
         """ Prints the help documentation for quit  """
-        print("Exits the program with formatting\n")
+        print("\nExits the program with formatting\n")
+
+    def do_setformat(self, command):
+        BaseModel.setformat(command)
+
+    def help_setformat(self):
+        print("\nSets the output format for the all and show commands.")
+        print("Currently supported formats are pretty, json, and " + \
+              "functional.\n")
+        print("  setformat <format>\n")
 
     def do_link(self, command):
         """ link an amenity to a place """
@@ -276,8 +271,10 @@ class HBNBCommand(cmd.Cmd):
 
     def help_create(self):
         """ Help information for the create method """
-        print("Creates a class of any type")
+        print("\nCreates a class of any type")
         print("  create <className> [attribute=value[, ...]]\n")
+        print("The id from the new object is stored for your use.")
+        print("See help last for more information.\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -311,15 +308,16 @@ class HBNBCommand(cmd.Cmd):
 
     def help_show(self):
         """ Help information for the show command """
-        print("Shows an individual instance of a class")
+        print("\nShows an individual instance of a class")
         print("  show <className> <objectId>\n")
+        print("SEE ALSO: setformat\n")
 
     def do_delete(self, args):
         self.do_destroy(args)
 
     def help_delete(self):
         """ Help information for the delete command """
-        print("** Delete is a synonym for destory\n")
+        print("\n** Delete is a synonym for destory\n")
         self.help_destroy(["Deletes", "delete"])
 
     def do_destroy(self, args):
@@ -352,7 +350,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_destroy(self, delete=["Destorys","destroy"]):
         """ Help information for the destroy command """
-        print(f"{delete[0]} an individual instance of a class\n")
+        print(f"\n{delete[0]} an individual instance of a class\n")
         print(f"  {delete[1]} <className> <objectId>\n")
 
     def do_all(self, args):
@@ -365,16 +363,21 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all().items():
+                print("{\"objects\": [")
                 if k.split('.')[0] == args:
                     print(v)
+                print("]}")
         else:
+            print("{\"objects\": [")
             for k, v in storage.all().items():
-                print(v)
+                print(str(v).replace("'", "\"", -1))
+            print("]}")
 
     def help_all(self):
         """ Help information for the all command """
-        print("Shows all objects, or all objects of a class\n")
+        print("\nShows all objects, or all objects of a class\n")
         print("  all [className]\n")
+        print("SEE ALSO: setformat\n")
 
     def do_count(self, args):
         """Count current number of class instances"""
@@ -386,7 +389,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_count(self):
         """ """
-        print("Counts the number of objects in a class\n")
+        print("\nCounts the number of objects in a class\n")
         print("  count <class_name>\n")
 
     def do_update(self, args):
@@ -474,7 +477,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_update(self):
         """ Help information for the update class """
-        print("Updates an object with new information\n")
+        print("\nUpdates an object with new information\n")
         print("  update <className> <id> [name value[ name value ...]]\n")
 
     def do_Amenity(self, args):
@@ -502,27 +505,27 @@ class HBNBCommand(cmd.Cmd):
         self.last_value["User"] = args
 
     def help_Amenity(self):
-        print("Stores an Amenity id to $Amenity\n")
+        print("\nStores an Amenity id to $Amenity\n")
         print("  Amenity <id>\n")
 
     def help_Place(self):
-        print("Stores a Place id to $Place\n")
+        print("\nStores a Place id to $Place\n")
         print("  Place <id>\n")
 
     def help_State(self):
-        print("Stores a State id to $State\n")
+        print("\nStores a State id to $State\n")
         print("  State <id>\n")
 
     def help_City(self):
-        print("Stores a City id to $City\n")
+        print("\nStores a City id to $City\n")
         print("  City <id>\n")
 
     def help_Review(self):
-        print("Stores a Review id to $Review\n")
+        print("\nStores a Review id to $Review\n")
         print("  Review <id>\n")
 
     def help_User(self):
-        print("Stores a User id to $User\n")
+        print("\nStores a User id to $User\n")
         print("  User <id>\n")
 
 
