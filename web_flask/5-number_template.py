@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 """ task 5 """
 from flask import Flask, render_template
