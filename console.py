@@ -14,6 +14,7 @@ from models.review import Review
 # determines prompt for interactive/non-interactive modes
 p = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
+
 class HBNBCommand(cmd.Cmd):
     """ Contains the functionality for the HBNB console"""
     prompt = p
@@ -142,7 +143,7 @@ class HBNBCommand(cmd.Cmd):
 
     def help_setformat(self):
         print("\nSets the output format for the all and show commands.")
-        print("Currently supported formats are pretty, json, and " + \
+        print("Currently supported formats are pretty, json, and " +
               "functional.\n")
         print("  setformat <format>\n")
 
@@ -349,7 +350,7 @@ class HBNBCommand(cmd.Cmd):
         except KeyError:
             print("** no instance found **")
 
-    def help_destroy(self, delete=["Destorys","destroy"]):
+    def help_destroy(self, delete=["Destorys", "destroy"]):
         """ Help information for the destroy command """
         print(f"\n{delete[0]} an individual instance of a class\n")
         print(f"  {delete[1]} <className> <objectId>\n")
@@ -364,15 +365,19 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all().items():
-                if out_format == "json": print("{\"objects\": [")
+                if out_format == "json":
+                    print("{\"objects\": [")
                 if k.split('.')[0] == args:
                     print(v)
-                if out_format == "json": print("]}")
+                if out_format == "json":
+                    print("]}")
         else:
-            if out_format == "json": print("{\"objects\": [")
+            if out_format == "json":
+                print("{\"objects\": [")
             for k, v in storage.all().items():
                 print(str(v).replace("'", "\"", -1))
-            if out_format == "json": print("]}")
+            if out_format == "json":
+                print("]}")
 
     def help_all(self):
         """ Help information for the all command """
