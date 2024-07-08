@@ -6,8 +6,13 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 import models
 from os import getenv
-Base = declarative_base()
+
 storage_type = getenv('HBNB_TYPE_STORAGE')
+
+if storage_type == 'db':
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
@@ -44,7 +49,7 @@ class BaseModel:
             table_width = 59
             cls = "+" + "-" * (table_width - 2) + "+\n"
             cls += f"| {self.__class__.__name__.ljust(8)}"
-            cls += f"{self.id.rjust(46)} |\n"
+            cls += f" {self.id.rjust(46)} |\n"
             cls += "+" + "-" * (table_width - 2) + "+\n"
             for k, v in self.__dict__.items():
                 if k not in exclude:
@@ -59,7 +64,8 @@ class BaseModel:
                    f"\"data\": {self.remove_sa()}" + "},"
         else:
             cls = (str(type(self)).split('.')[-1]).split('\'')[0]
-            return '[{}] ({}) {}'.format(cls, self.id, self.remove_sa())
+            # return '[{}] ({}) {}'.format(cls, self.id, self.remove_sa())
+            return f'[{cls}] ({self.id}) {self.remove_sa()}'
 
     def setformat(args):
         """ update the output format for show and all """

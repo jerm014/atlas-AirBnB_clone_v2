@@ -18,18 +18,18 @@ def hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c(text):
-    return "C {}".format(text.replace('_', ''))
+    return f"C {text.replace('_', '')}"
 
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python(text="is cool"):
-    return "Python {}".format(text.replace('_', ' '))
+    return f"Python {text.replace('_', ' ')}"
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
-    return "{} is a number".format(n)
+    return f"{n} is a number"
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
@@ -49,7 +49,12 @@ def number_odd_or_even(n: int):
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     from models import storage
-    states = dict(sorted(storage.all('State').items(), key=get_name))
+    for k, v in storage.all().items():
+        print(v)
+    states = dict(sorted(storage.all('State').items()))
+    for state in states.items():
+        print(state[0])
+        print(state[1])
     return render_template('7-states_list.html', states=states)
 
 
