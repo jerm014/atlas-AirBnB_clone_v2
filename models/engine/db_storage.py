@@ -23,11 +23,11 @@ host = getenv('HBNB_MYSQL_HOST')
 db_name = getenv('HBNB_MYSQL_DB')
 connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
 
-username = "hbnb_dev"
-password = "hbnb_dev_pwd"
-host = "localhost"
-db_name = "hbnb_dev_db"
-connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
+#  username = "hbnb_dev"
+#  password = "hbnb_dev_pwd"
+#  host = "localhost"
+#  db_name = "hbnb_dev_db"
+#  connection = f'mysql+mysqldb://{username}:{password}@{host}/{db_name}'
 
 
 class DBStorage:
