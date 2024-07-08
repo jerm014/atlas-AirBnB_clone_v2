@@ -52,9 +52,11 @@ def states_list():
     states = dict(sorted(storage.all('State').items(), key=get_name))
     return render_template('7-states_list.html', states=states)
 
+
 def get_name(item):
     key, value = item
     return value.name
+
 
 @app.teardown_appcontext
 def teardown(exc):
