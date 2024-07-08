@@ -49,13 +49,14 @@ def number_odd_or_even(n: int):
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     from models import storage
-    for k, v in storage.all().items():
-        print(v)
-    states = dict(sorted(storage.all('State').items()))
-    for state in states.items():
-        print(state[0])
-        print(state[1])
-    return render_template('7-states_list.html', states=states)
+    from models.state import State
+
+    states = storage.all(State).values()
+    print(states)
+    sorted_states = sorted(states, key=lambda state: state.name)
+    print("**********")
+    print(sorted_states)
+    return render_template('7-states_list.html', states=sorted_states)
 
 
 def get_name(item):
