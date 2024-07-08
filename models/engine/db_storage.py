@@ -158,3 +158,5 @@ class DBStorage:
             else:
                 print(" ** Amenity and Place not linked ** ")
                 return False
+    def close(self):
+        self.__session.remove()

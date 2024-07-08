@@ -90,10 +90,14 @@ class BaseModel:
 
     def remove_sa(self):
         """
-        return a copy of the dictionary but
+        return a copy of the dictionary
         with the _sa_instance_state key removed
         """
         new_dict = self.__dict__.copy()
+        new_dict.update({'__class__':
+                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        new_dict['created_at'] = self.created_at.isoformat()
+        new_dict['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in new_dict:
             del new_dict['_sa_instance_state']
         return new_dict

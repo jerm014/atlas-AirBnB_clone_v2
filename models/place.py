@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base, storage_type
 from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship
+from models import Amenity, City
 
 
 class Place(BaseModel, Base):
@@ -67,14 +68,26 @@ class Place(BaseModel, Base):
         def amenities(self):
             """Get/set linked Amenities."""
             amenity_list = []
-            for amenity in list(models.storage.all("Amenity").values()):
+            for amenity in list(storage.all("Amenity").values()):
                 if amenity.id in self.amenity_ids:
                     amenity_list.append(amenity)
             return amenity_list
 
         @amenities.setter
         def amenities(self, value):
-            #  do not compare types, for exact checks use `is` / `is not`,
-            #  for instance checks use `isinstance()`
             if isinstance(value, Amenity):
                 self.amenity_ids.append(value.id)
+
+        @property
+        def cities(self):
+            """Get/set linked Cities."""
+            city_list = []
+            for city in list(storage.all("City").values()):
+                if city.id == self.city_id:
+                    city_list.append(city)
+            return city_list
+
+        @cities.setter
+        def cities(self, value):
+            if isinstance(value, City):
+                self.city_id = value.id

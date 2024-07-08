@@ -22,8 +22,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """list of cities in this state"""
+            from models import City, storage
             city_list = [] # Initialize an empty list to store cities
-            all_cities = models.storage.all(City) # Get all cities from the storage
+            all_cities = storage.all(City) # Get all cities from the storage
             for city in all_cities.values():
                 if city.state_id == self.id:
                     city_list.append(city) # Add city if it belongs to this state

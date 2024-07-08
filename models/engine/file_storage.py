@@ -45,7 +45,7 @@ class FileStorage:
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
         odict = FileStorage.__objects
-        objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
+        objdict = {obj: odict[obj].remove_sa() for obj in odict.keys()}
         with open(FileStorage.__file_path, "w") as f:
             json.dump(objdict, f)
 
@@ -72,3 +72,6 @@ class FileStorage:
         message = "if you were using the database, this would add "
         message += f"Amenity {amenity_id} to Place {place_id}."
         print(message)
+
+    def close(self):
+        self.reload()
