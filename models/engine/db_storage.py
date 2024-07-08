@@ -34,20 +34,38 @@ class DBStorage:
         pass
 
     def all(self, cls=None):
-        """ returns a dictionary of some things or all things """
+        """
+        returns a dictionary of some things or all things
+        if the class has a name, the dictionary will be sorted by name
+        wait. are dictionaries ordered or unordered?
+        oh yeah. python is dumb.
+        dictionaries in python 3.6 and before are unordered
+        but dictionaries in python 3.7 and after are ordered
+        """
         all_dict = {}
         if cls:
             if isinstance(cls, str):
                 cls = eval(cls)
                 for clases in [State, City, User, Place, Review, Amenity]:
-                    query = self.__session.query(clases)
+                    #  contains name:
+                    if clases in [State, City, Place, Amenity]: 
+                        query = self.__session.query(clases). \
+                            order_by(clases.name.asc())
+                    else: # does not contain name
+                        query = self.__session.query(clases)
+
                     for elem in query:
                         key = "{}.{}".format(type(elem).__name__, elem.id)
                         if isinstance(elem, cls):
                             all_dict[key] = elem
         else:
             for clases in [State, City, User, Place, Review, Amenity]:
-                query = self.__session.query(clases)
+                #  contains name:
+                if clases in [State, City, Place, Amenity]: 
+                    query = self.__session.query(clases). \
+                        order_by(clases.name.asc())
+                else:  # does not contain name
+                    query = self.__session.query(clases)
                 for elem in query:
                     key = "{}.{}".format(type(elem).__name__, elem.id)
                     # del elem.__dict__["_sa_instance_state"]
