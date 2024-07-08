@@ -41,17 +41,18 @@ class BaseModel:
         exclude = ['id', '_sa_instance_state', 'created_at', 'updated_at']
         last = ['created_at', 'updated_at']
         if models.out_format == "pretty":
-            width = 59
-            cls = "+" + "-" * (width - 2) + "+\n"
-            cls += f"| {self.__class__.__name__.ljust(8)} {self.id.rjust(46)} |\n"
-            cls += "+" + "-" * (width - 2) + "+\n"
+            table_width = 59
+            cls = "+" + "-" * (table_width - 2) + "+\n"
+            cls += f"| {self.__class__.__name__.ljust(8)}"
+            cls += f"{self.id.rjust(46)} |\n"
+            cls += "+" + "-" * (table_width - 2) + "+\n"
             for k, v in self.__dict__.items():
                 if k not in exclude:
                     cls += f"| {k.ljust(16)} | {str(v).ljust(36)} |\n"
             for k, v in self.__dict__.items():
                 if k in last:
                     cls += f"| {k.ljust(16)} | {str(v).ljust(36)} |\n"
-            cls += "+" + "-" * (width - 2) + "+\n"
+            cls += "+" + "-" * (table_width - 2) + "+\n"
             return cls
         elif models.out_format == "json":
             return "{\"type\": \"" + f"{self.__class__.__name__}\", " + \
@@ -83,9 +84,6 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
-        # remove the key _sa_instance_state from the dictionary if it exists:
-        #if '_sa_instance_state' in dictionary:
-        #    del dictionary['_sa_instance_state']
         return dictionary
 
     def remove_sa(self):
@@ -95,7 +93,7 @@ class BaseModel:
         """
         new_dict = self.__dict__.copy()
         new_dict.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+                        (str(type(self)).split('.')[-1]).split('\'')[0]})
         new_dict['created_at'] = self.created_at.isoformat()
         new_dict['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in new_dict:
