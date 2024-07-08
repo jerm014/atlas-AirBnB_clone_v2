@@ -92,8 +92,7 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        self.__scoped_session = scoped_session(session_factory)
-        self.__session = self.__scoped_session()
+        self.__session = scoped_session(session_factory)
 
     def link_amenity(self, amenity_id, place_id):
         """ Add an amenity to a place """
@@ -163,5 +162,4 @@ class DBStorage:
                 return False
 
     def close(self):
-        pass
-        self.__session.close()
+        self.__session.remove()
