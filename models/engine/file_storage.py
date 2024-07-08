@@ -33,7 +33,6 @@ class FileStorage:
             for k, v in self.__objects.items():
                 if v.__class__.__name__ == cls:
                     obj[k] = v
-            print(obj)
             return obj
         else:
             return self.__objects
