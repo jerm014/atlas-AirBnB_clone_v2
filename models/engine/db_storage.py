@@ -84,7 +84,7 @@ class DBStorage:
 
     def reload(self):
         """ Create all tables in the database """
-        
+
         Base.metadata.create_all(self.__engine)
         # Create a new session using sessionmaker
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
@@ -158,5 +158,6 @@ class DBStorage:
             else:
                 print(" ** Amenity and Place not linked ** ")
                 return False
+
     def close(self):
         self.__session.remove()
