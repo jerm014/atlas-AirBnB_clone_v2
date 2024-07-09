@@ -71,17 +71,32 @@ def cities_by_states():
                            cities=sorted_cities)
 
 
+@app.route('/states', strict_slashes=False)
 @app.route('/states/<id>', strict_slashes=False)
-def state(id):
+def state(id=None):
     from models import storage
     from models.state import State
+    from models.city import City
 
     states = storage.all(State).values()
+    sorted_states = sorted(states, key=lambda state: state.name)
     state = [state for state in states if state.id == id]
-    if state:
-        return render_template('9-state.html', state=state[0])
+    cities = storage.all(City).values()
+    city = [city for city in cities if city.state_id == id]
+    sorted_cities = sorted(city, key=lambda city: city.name)
+
+    if id is None:
+        return render_template('9-states.html', states=sorted_states)
+    elif state.__len__() == 1: #  probably a better way to count these?
+        return render_template('9-states.html',
+                               states=None,
+                               cities=sorted_cities,
+                               state_name=state[0].name)
     else:
-        return render_template('9-state.html', state=None)
+        return render_template('9-states.html',
+                               states=None,
+                               cities=None,
+                               error="Not found!")
 
 
 @app.teardown_appcontext
