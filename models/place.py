@@ -61,9 +61,10 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """return a list of reviews"""
+            from models import storage
             from models.review import Review
             review_list = []
-            all_reviews = models.storage.all(Review)
+            all_reviews = storage.all(Review)
             for review in all_reviews.values():
                 if str(review.place_id) == str(self.id):
                     review_list.append(review)
@@ -72,6 +73,7 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """Get/set linked Amenities."""
+            from models import storage
             amenity_list = []
             for amenity in list(storage.all("Amenity").values()):
                 if amenity.id in self.amenity_ids:
@@ -86,6 +88,7 @@ class Place(BaseModel, Base):
         @property
         def cities(self):
             """Get/set linked Cities."""
+            from models import storage
             city_list = []
             for city in list(storage.all("City").values()):
                 if city.id == self.city_id:

@@ -18,18 +18,18 @@ def hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c(text):
-    return "C {}".format(text.replace('_', ''))
+    return f"C {text.replace('_', '')}"
 
 
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python(text="is cool"):
-    return "Python {}".format(text.replace('_', ' '))
+    return f"Python {text.replace('_', ' ')}"
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def number(n):
-    return "{} is a number".format(n)
+    return "{n} is a number"
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
