@@ -8,15 +8,7 @@ from os import getenv
 from sqlalchemy import create_engine, exc
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-classes = {"Amenity": Amenity,
-           "City": City,
-           "Place": Place,
-           "Review": Review,
-           "State": State,
-           "User": User}
-
-""" Initialize the MySQL Database Storage """
-
+#  Initialize the MySQL Database Storage
 username = getenv('HBNB_MYSQL_USER')
 password = getenv('HBNB_MYSQL_PWD')
 host = getenv('HBNB_MYSQL_HOST')
@@ -35,6 +27,13 @@ class DBStorage:
     __engine = create_engine(connection)
     __session = None
 
+    classes = {"Amenity": Amenity,
+               "City": City,
+               "Place": Place,
+               "Review": Review,
+               "State": State,
+               "User": User}
+
     def __init__(self):
         """make a DBStorage object and connect to the database"""
         pass
@@ -43,7 +42,15 @@ class DBStorage:
         """Query all objects in the current database session"""
         objs = {}
         if cls:
-            # If class specified, query all objects of that class
+            #  support searching for a specific class by Class or 'Class'
+            if isinstance(cls, str):
+                if cls in self.classes:
+                    cls = self.classes[cls]
+                else:
+                    #  user didn't provide a class we can use
+                    #  call us again without a cls specifier
+                    return (self.all())
+            #  If valid class specified, query all objects of that class
             results = self.__session.query(cls).all()
             for obj in results:
                 key = f"{cls.__name__}.{obj.id}"

@@ -1,1 +1,1 @@
-This directory implements webpage design.
+# There's nothing to see here.
